@@ -20,17 +20,16 @@ services:
     depends_on:
       - api
     build:
-      context: ./deps/back
+      context: ./deps/front
       dockerfile: Dockerfile
     labels:
       - traefik.enable=true
-      - traefik.frontend.rule=Host:${DOMAIN}
+      - traefik.port=8000
+      - traefik.frontend.rule=Host:vuefinances.${DOMAIN}
       - traefik.backend=web
 
   api:
     container_name: api
-    depends_on:
-      - prisma
     build:
       context: ./deps/back
       dockerfile: Dockerfile
@@ -43,7 +42,7 @@ services:
       CLIENT_HOSTS:
       JWT_SECRET:
       NODE_ENV:
-      PRISMA_ENDPOINT: http://prisma.localhost
+      PRISMA_ENDPOINT: http://prisma:4466
       PRISMA_SERVICE:
       PRISMA_STAGE:
       PRISMA_SERVICE_SECRET:
